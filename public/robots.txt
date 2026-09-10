@@ -1,0 +1,6 @@
+# Replace YOUR.DOMAIN with the deployed origin before go-live.
+User-agent: *
+Allow: /
+Disallow:
+
+Sitemap: https://YOUR.DOMAIN/sitemap.xml

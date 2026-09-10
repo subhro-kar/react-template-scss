@@ -1,4 +1,4 @@
-import styles from './PageSkeleton.module.scss';
+import styles from '@/presentation/components/PageSkeleton.module.scss';
 
 export function PageSkeleton() {
   return (

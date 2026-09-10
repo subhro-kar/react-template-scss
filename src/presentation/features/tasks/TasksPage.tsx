@@ -1,8 +1,8 @@
-import { useState, type FormEvent } from 'react';
-import { useTasks } from '../../../application/useTasks.ts';
-import type { TaskFilter } from '../../../domain/entities/task.ts';
-import { Button } from '../../components/Button.tsx';
-import styles from './TasksPage.module.scss';
+import { type FormEvent, useState } from 'react';
+import { useTasks } from '@/application/useTasks.tsx';
+import type { TaskFilter } from '@/domain/entities/task.ts';
+import { Button } from '@/presentation/components/Button.tsx';
+import styles from '@/presentation/features/tasks/TasksPage.module.scss';
 
 const FILTERS: readonly TaskFilter[] = ['all', 'active', 'done'];
 
@@ -10,7 +10,7 @@ const FILTERS: readonly TaskFilter[] = ['all', 'active', 'done'];
 // No business rules, no storage, no fetch — those live inward.
 
 export function TasksPage() {
-  const { tasks, loaded, stats, addTask, toggleTask, removeTask, clearDone, selectTasks } = useTasks();
+  const { loaded, stats, addTask, toggleTask, removeTask, clearDone, selectTasks } = useTasks();
   const [draft, setDraft] = useState('');
   const [filter, setFilter] = useState<TaskFilter>('all');
   const [error, setError] = useState('');
@@ -41,7 +41,7 @@ export function TasksPage() {
         <input
           className={styles.input}
           value={draft}
-          onChange={event => setDraft(event.target.value)}
+          onChange={(event) => setDraft(event.target.value)}
           placeholder="What needs doing?"
           aria-label="New task title"
         />
@@ -53,17 +53,18 @@ export function TasksPage() {
         </p>
       )}
 
-      <div className={styles.filters} role="group" aria-label="Filter tasks">
-        {FILTERS.map(value => (
+      <fieldset className={styles.filters}>
+        <legend>Filter tasks</legend>
+        {FILTERS.map((value) => (
           <label key={value}>
             <input type="radio" name="task-filter" checked={filter === value} onChange={() => setFilter(value)} />
             {value}
           </label>
         ))}
-      </div>
+      </fieldset>
 
       <ul className={styles.list}>
-        {visible.map(task => (
+        {visible.map((task) => (
           <li key={task.id} className={styles.item}>
             <label className={styles.itemLabel}>
               <input

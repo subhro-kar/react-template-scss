@@ -1,0 +1,51 @@
+# React SCSS Template llms.txt
+# https://YOUR.DOMAIN
+
+## About
+React SCSS Template is a clean-architecture starter for React single-page apps:
+React 19, TypeScript (strict), Vite, pnpm, react-router, zustand, SCSS Modules,
+and PWA support, with native Node tests and Cloudflare Pages CI.
+
+## When to Use This
+- **Starting a new React project**: clone the GitHub template at
+  https://github.com/subhro-kar/react-template-scss and run `pnpm install`.
+- **Understanding the layering**: read AGENTS.md (dependency rule) and the
+  per-layer READMEs under src/domain, src/application, src/infrastructure,
+  and src/presentation.
+- **Running or verifying the app**: `pnpm dev`, `pnpm test`, `pnpm lint`,
+  `pnpm typecheck`, `pnpm build` (Node 22.18+, pnpm 11.19+).
+- **Adding a feature**: follow the new-feature checklist in
+  src/presentation/README.md — domain rules, ports, zustand store factory,
+  adapters, lazy route behind a VITE_ENABLE_* flag.
+
+## Key Pages
+- / — Home
+- /tasks — Example feature (only when VITE_ENABLE_TASKS=true)
+
+## Repository Layout
+- src/domain — pure entities and business rules; no React or DOM imports
+- src/application — ports, zustand store factories, feature flags
+- src/infrastructure — adapters: localStorage, HTTP, ids, clock
+- src/presentation — components, SCSS Modules, routes
+- src/main.tsx — composition root where adapters and stores are wired
+- scripts/ — PWA icon and Open Graph image generation
+- .github/workflows — CI (verify) and Cloudflare Pages deploy
+
+## Tech Stack
+- Frontend: React 19, react-router 7, zustand 5
+- Build: Vite 8, TypeScript 7 (strict), Sass, vite-plugin-pwa
+- Tooling: Biome (lint + format), lefthook (git hooks), native Node test
+  runner with c8 coverage
+- Package manager: pnpm 11 (allowBuilds policy blocks lifecycle scripts)
+
+## Conventions
+- Conventional Commits on main; Biome formatting enforced by pre-commit hook
+- Feature flags default to false and gate both route and nav link
+- SCSS Modules colocated with components; design tokens in
+  src/presentation/styles/global.scss (light + dark)
+
+## Author
+Subhro Kar — https://github.com/subhro-kar
+
+## Contact
+- GitHub: https://github.com/subhro-kar

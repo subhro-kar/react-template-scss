@@ -11,18 +11,33 @@ presentation ──▶ application ──▶ domain
 ```
 
 - `src/domain` — pure entities and rules. No React, no DOM, no env, no fetch.
-- `src/application` — ports (`ports.ts`), use-case hooks, feature flags. Codes
-  against interfaces, never against infrastructure classes.
+- `src/application` — ports (`ports.ts`), zustand store factories, use-case
+  hooks, feature flags. Codes against interfaces, never against infrastructure
+  classes.
 - `src/infrastructure` — the only layer allowed `localStorage`, `fetch`,
   `crypto`, `Date`, and `AudioContext`, always behind a port.
 - `src/presentation` — components, SCSS Modules, routes. Renders state and
   forwards intents; business decisions live inward.
-- `src/main.tsx` is the composition root: construct adapters there and provide
-  them via `DependenciesProvider`. No other file instantiates infrastructure.
+- `src/main.tsx` is the composition root: construct adapters, build stores
+  with them, and provide the stores via their `<Feature>StoreProvider`. No
+  other file instantiates infrastructure.
 
 When adding a feature, follow the checklist in
 `src/presentation/README.md`. When in doubt about where code goes, move it
 inward until it stops needing React, and put it there.
+
+## State management
+
+- zustand is the standard. Feature state lives in a store created by a
+  factory (`src/application/stores/create<Feature>Store.ts`) that receives
+  `Dependencies` — never a module-level singleton with hardwired imports.
+- Store actions orchestrate: call a domain rule, set state, persist through a
+  port. They never contain business rules.
+- Components subscribe via the thin `use<Feature>` hook, one `useStore`
+  selection per field, `useShallow` for grouped actions. Components never
+  import a store or call `getState` directly.
+- Purely local UI state (draft inputs, open/closed dialogs) stays in
+  component `useState`. Don't put it in a store.
 
 ## Codebase exploration
 
@@ -46,15 +61,23 @@ inward until it stops needing React, and put it there.
   no DOM shims — testable code lives in domain/application/infrastructure as
   pure functions and classes, which is the point of the layering.
 - Colocate `*.test.ts` next to the module it tests.
-- `pnpm build` runs `tsc --noEmit` first; type errors fail the build.
+- `pnpm test:coverage` adds c8 line/branch coverage; `pnpm build` runs
+  `tsc --noEmit` first, so type errors fail the build.
 - `MemoryTaskRepository` (infrastructure/storage) is the injected fake for
-  application tests — no mocking libraries.
+  store and application tests — no mocking libraries.
 
 ## Style
 
+- Biome enforces formatting and lint (`pnpm lint`, autofix with
+  `pnpm lint:fix`); lefthook runs Biome on staged files pre-commit and
+  typecheck/tests pre-push. Don't hand-format — let Biome do it.
+- Imports: `@/` alias (maps to `src/`) everywhere in presentation and entry
+  code. `domain`, `application`, and `infrastructure` files keep relative
+  imports — the native Node test runner loads them and does not resolve
+  tsconfig paths, so a `@/` import inside those layers breaks `pnpm test`.
 - TypeScript strict; `import type` for types (verbatimModuleSyntax).
-- Immutability by default: domain rules return new values; React state is
-  updated via reducers in application hooks.
+- Immutability by default: domain rules return new values; store actions
+  replace state, they don't mutate.
 - SCSS Modules colocated with components; tokens (colors, spacing, radii,
   fonts) come from CSS custom properties in `src/presentation/styles/global.scss`.
   Never hardcode a color or size in a module.

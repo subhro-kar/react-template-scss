@@ -1,0 +1,17 @@
+# Fast checks on commit, full checks before push. CI runs everything again.
+# Skip once with --no-verify: git commit --no-verify
+
+pre-commit:
+  commands:
+    biome:
+      # Fix formatting/lint on staged files and re-stage them.
+      glob: "*.{js,mjs,ts,tsx,json,jsonc,css,scss,html}"
+      run: pnpm exec biome check --write --no-errors-on-unmatched {staged_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    typecheck:
+      run: pnpm typecheck
+    test:
+      run: pnpm test

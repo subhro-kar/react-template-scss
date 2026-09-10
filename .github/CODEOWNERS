@@ -1,0 +1,4 @@
+# Default owner: everything falls back to this. Add per-directory owners
+# as the team grows, e.g. `/.github/ @subhro-kar`.
+
+* @subhro-kar

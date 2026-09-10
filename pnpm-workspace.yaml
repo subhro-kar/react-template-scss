@@ -1,2 +1,5 @@
 allowBuilds:
   '@parcel/watcher': false
+  # lefthook's postinstall is deliberately blocked: the `prepare` script
+  # installs the git hooks explicitly instead (works better under pnpm).
+  lefthook: false

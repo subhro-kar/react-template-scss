@@ -1,15 +1,15 @@
-import { Suspense, lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { NavLink, Route, Routes } from 'react-router';
-import { ErrorBoundary } from './components/ErrorBoundary.tsx';
-import { featureFlags } from '../application/featureFlags.ts';
-import { PageSkeleton } from './components/PageSkeleton.tsx';
-import { Home } from './pages/Home.tsx';
-import styles from './App.module.scss';
+import { featureFlags } from '@/application/featureFlags.ts';
+import styles from '@/presentation/App.module.scss';
+import { ErrorBoundary } from '@/presentation/components/ErrorBoundary.tsx';
+import { PageSkeleton } from '@/presentation/components/PageSkeleton.tsx';
+import { Home } from '@/presentation/pages/Home.tsx';
 
 // Feature routes lazy-load so each feature's code and SCSS split into
 // their own chunk; a hidden (flag=false) feature costs zero bytes.
 const TasksPage = lazy(() =>
-  import('./features/tasks/TasksPage.tsx').then(module => ({ default: module.TasksPage })),
+  import('@/presentation/features/tasks/TasksPage.tsx').then((module) => ({ default: module.TasksPage })),
 );
 
 export function App() {

@@ -12,18 +12,30 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --experimental-strip-types --test \"src/**/*.test.ts\"",
-    "icons": "node scripts/generate-pwa-icons.mjs"
+    "test:coverage": "c8 --include 'src/**' --exclude 'src/**/*.test.ts' --reporter=text --reporter=html node --experimental-strip-types --test \"src/**/*.test.ts\"",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "typecheck": "tsc --noEmit",
+    "audit": "pnpm audit --prod --audit-level high",
+    "og-image": "node scripts/generate-og-image.mjs",
+    "sitemap": "node scripts/generate-sitemap.mjs",
+    "icons": "node scripts/generate-pwa-icons.mjs",
+    "prepare": "lefthook install"
   },
   "dependencies": {
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router": "^7.0.0"
+    "react-router": "^7.0.0",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.12",
     "@types/node": "^26.4.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "@vitejs/plugin-react": "^6.1.1",
+    "c8": "^12.0.0",
+    "lefthook": "^2.1.12",
     "sass": "^1.103.1",
     "sharp": "^0.35.4",
     "typescript": "^7.0.2",

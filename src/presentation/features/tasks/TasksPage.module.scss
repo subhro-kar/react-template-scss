@@ -33,8 +33,20 @@ h1 {
 
 .filters {
   display: flex;
+  align-items: center;
   gap: var(--space-lg);
   margin-block: var(--space-md);
+  border: none;
+  padding: 0;
+
+  legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 
   label {
     display: inline-flex;

@@ -1,0 +1,18 @@
+# Normalize line endings: LF in the repo and the working tree, everywhere.
+* text=auto eol=lf
+
+# Windows-only scripts may keep CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets: never diff, merge, or normalize.
+*.png binary
+*.ico binary
+*.webp binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.wav binary
+*.mp3 binary
+*.woff binary
+*.woff2 binary

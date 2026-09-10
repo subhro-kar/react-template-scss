@@ -26,7 +26,7 @@ export function toggleStatus(task: Task): Task {
 
 export function filterTasks(tasks: readonly Task[], filter: TaskFilter): readonly Task[] {
   if (filter === 'all') return tasks;
-  return tasks.filter(task => task.status === filter);
+  return tasks.filter((task) => task.status === filter);
 }
 
 export interface TaskStats {

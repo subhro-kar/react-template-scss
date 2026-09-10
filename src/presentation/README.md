@@ -30,8 +30,10 @@ knows React renders anything on a screen.
 
 1. `domain/entities` + `domain/rules` (+ tests) — pure logic.
 2. `application/ports.ts` — any capability the feature needs beyond React.
-3. `application/use<Feature>.ts` — the use case hook.
+3. `application/stores/create<Feature>Store.ts` + `application/use<Feature>.ts` —
+   the zustand store factory and its component-facing hook.
 4. `infrastructure/*` — port implementations.
 5. `presentation/features/<feature>/` — UI + SCSS module, lazy route in
    `App.tsx`, flag in `featureFlags.ts` and `.env.example`.
-6. `main.tsx` — construct and provide new adapters.
+6. `main.tsx` — construct adapters, create the store, call its `hydrate()`
+   once, and provide it via `<Feature>StoreProvider`.

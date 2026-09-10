@@ -1,5 +1,5 @@
-import test from 'node:test';
 import assert from 'node:assert/strict';
+import test from 'node:test';
 import { createTask, filterTasks, taskStats, toggleStatus, validateTitle, withStatus } from './tasks.ts';
 
 test('createTask validates id, title, and timestamp, and starts active', () => {

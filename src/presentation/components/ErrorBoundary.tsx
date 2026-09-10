@@ -1,5 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
-import styles from './ErrorBoundary.module.scss';
+import styles from '@/presentation/components/ErrorBoundary.module.scss';
 
 // Feature-level boundary: wrap each route so one crashing feature never
 // takes down the app shell. Reset by remounting (route change).

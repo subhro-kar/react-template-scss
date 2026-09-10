@@ -1,8 +1,14 @@
-import { defineConfig } from 'vite';
+import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
   plugins: [
     react(),
     VitePWA({
@@ -37,6 +43,6 @@ export default defineConfig({
   server: { watch: process.platform === 'win32' ? { usePolling: true, interval: 300 } : undefined },
   // Keep heavy vendor code in its own chunk; add one manualChunks entry per large dependency.
   build: {
-    rolldownOptions: { output: { manualChunks: id => (id.includes('/node_modules/') ? 'vendor' : undefined) } },
+    rolldownOptions: { output: { manualChunks: (id) => (id.includes('/node_modules/') ? 'vendor' : undefined) } },
   },
 });

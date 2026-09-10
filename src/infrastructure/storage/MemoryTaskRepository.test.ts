@@ -1,8 +1,8 @@
-import { createTask, withStatus } from '../../domain/rules/tasks.ts';
-import type { Task } from '../../domain/entities/task.ts';
-import { MemoryTaskRepository } from './MemoryTaskRepository.ts';
-import test from 'node:test';
 import assert from 'node:assert/strict';
+import test from 'node:test';
+import type { Task } from '../../domain/entities/task.ts';
+import { createTask, withStatus } from '../../domain/rules/tasks.ts';
+import { MemoryTaskRepository } from './MemoryTaskRepository.ts';
 
 test('MemoryTaskRepository round-trips tasks and stays independent of its callers', async () => {
   const repository = new MemoryTaskRepository();
