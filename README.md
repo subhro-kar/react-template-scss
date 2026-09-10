@@ -24,8 +24,10 @@ Requires Node 22.18+ (see `.nvmrc`) and pnpm 11.19.0.
 
 ```sh
 pnpm dev            # env validation, then Vite dev server on 127.0.0.1:5173
-pnpm test           # Native Node test runner over src/**/*.test.ts
-pnpm test:coverage  # Same, with c8 line/branch coverage
+pnpm test           # Unit tests (native Node) + component tests (vitest)
+pnpm test:unit      # Native Node runner over src/**/*.test.ts only
+pnpm test:components # vitest + Testing Library over src/**/*.test.tsx only
+pnpm test:coverage  # Unit tests with c8 line/branch coverage
 pnpm lint           # Biome lint + format check
 pnpm lint:fix       # Biome autofix
 pnpm typecheck      # tsc --noEmit
@@ -60,7 +62,7 @@ Each layer folder has a README with its rules and a new-feature checklist in `sr
 ## Conventions
 
 - **State:** zustand, built by store factories (`application/stores/`); components subscribe through thin hooks with one `useStore` selection per field. Local UI state stays in `useState`.
-- **Testing:** native Node runner (`node --experimental-strip-types --test`), tests colocated as `*.test.ts`. No vitest/jest or DOM shims; keeping logic out of components is what makes that possible. `MemoryTaskRepository` is the injectable fake — no mocking libraries. c8 reports coverage. (vitest + happy-dom + Testing Library are preinstalled for future component tests; wire a `vitest.config.ts` when you need them.)
+- **Testing:** two suites under one `pnpm test` — pure-layer unit tests on the native Node runner (`*.test.ts`, c8 coverage), and vitest + happy-dom + Testing Library component smoke tests for the common components (`*.test.tsx`). Keeping business logic out of components is what makes the Node-first split work; `MemoryTaskRepository` is the injectable fake — no mocking libraries.
 - **Typed env:** every `VITE_*` variable is declared in `src/vite-env.d.ts`, and `scripts/validate-env.mjs` fails dev/build on a misspelled flag or a non-boolean value.
 - **Tooling:** Biome for lint + format (one tool, one config); lefthook for git hooks. pnpm 11's `allowBuilds` blocks dependency lifecycle scripts unless explicitly approved.
 - **Feature flags:** `VITE_ENABLE_*=true|false` (see `.env.example`). Flags default to false in code, gate both route and nav link, and hidden features cost zero bytes because routes lazy-load.

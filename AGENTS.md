@@ -56,19 +56,21 @@ inward until it stops needing React, and put it there.
 
 ## Testing
 
-- Native Node runner only: `pnpm test` runs
-  `node --experimental-strip-types --test "src/**/*.test.ts"`. No vitest/jest
-  wiring, no DOM shims — testable code lives in domain/application/infrastructure
-  as pure functions and classes, which is the point of the layering.
-- Colocate `*.test.ts` next to the module it tests.
-- `pnpm test:coverage` adds c8 line/branch coverage; `pnpm build` runs
-  `tsc --noEmit` first, so type errors fail the build.
+- `pnpm test` runs two suites:
+  - **Unit** (`*.test.ts`): native Node runner over pure domain, application,
+    and infrastructure code — no DOM shims, which is the point of the layering.
+    `pnpm test:unit` / `pnpm test:coverage` (c8) run it alone.
+  - **Components** (`*.test.tsx`): vitest + happy-dom + Testing Library smoke
+    tests for common components (`vitest.config.ts`; `pnpm test:components`
+    runs it alone). Keep these few and behavior-focused — render, interact,
+    assert. If a component test needs business logic, that logic drifted
+    into presentation; move it inward to the Node suite.
+- Colocate tests next to the module they test. Unit tests never import React;
+  component tests never import a store directly (provide fakes via the
+  provider, as `TasksPage` consumers would).
+- `pnpm build` runs `tsc --noEmit` first, so type errors fail the build.
 - `MemoryTaskRepository` (infrastructure/storage) is the injected fake for
   store and application tests — no mocking libraries.
-- vitest, happy-dom, and Testing Library are installed but not wired into
-  `pnpm test`. If component tests are needed, add a `vitest.config.ts`
-  (`environment: 'happy-dom'`, include `src/**/*.test.tsx`) and a
-  `test:components` script; keep the Node runner as the default.
 
 ## Style
 
