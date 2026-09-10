@@ -23,14 +23,14 @@ Then rename your app in `package.json` (`name`), `index.html` (`<title>`, meta, 
 Requires Node 22.18+ (see `.nvmrc`) and pnpm 11.19.0.
 
 ```sh
-pnpm dev            # Vite dev server on 127.0.0.1:5173
+pnpm dev            # env validation, then Vite dev server on 127.0.0.1:5173
 pnpm test           # Native Node test runner over src/**/*.test.ts
 pnpm test:coverage  # Same, with c8 line/branch coverage
 pnpm lint           # Biome lint + format check
 pnpm lint:fix       # Biome autofix
 pnpm typecheck      # tsc --noEmit
 pnpm audit          # pnpm audit, high/critical only
-pnpm build          # typecheck + production build
+pnpm build          # env validation + typecheck + production build
 pnpm preview        # Serve the production build locally
 pnpm icons          # Regenerate PWA icons via sharp
 pnpm og-image       # Regenerate the Open Graph card
@@ -60,7 +60,8 @@ Each layer folder has a README with its rules and a new-feature checklist in `sr
 ## Conventions
 
 - **State:** zustand, built by store factories (`application/stores/`); components subscribe through thin hooks with one `useStore` selection per field. Local UI state stays in `useState`.
-- **Testing:** native Node runner (`node --experimental-strip-types --test`), tests colocated as `*.test.ts`. No vitest/jest or DOM shims; keeping logic out of components is what makes that possible. `MemoryTaskRepository` is the injectable fake — no mocking libraries. c8 reports coverage.
+- **Testing:** native Node runner (`node --experimental-strip-types --test`), tests colocated as `*.test.ts`. No vitest/jest or DOM shims; keeping logic out of components is what makes that possible. `MemoryTaskRepository` is the injectable fake — no mocking libraries. c8 reports coverage. (vitest + happy-dom + Testing Library are preinstalled for future component tests; wire a `vitest.config.ts` when you need them.)
+- **Typed env:** every `VITE_*` variable is declared in `src/vite-env.d.ts`, and `scripts/validate-env.mjs` fails dev/build on a misspelled flag or a non-boolean value.
 - **Tooling:** Biome for lint + format (one tool, one config); lefthook for git hooks. pnpm 11's `allowBuilds` blocks dependency lifecycle scripts unless explicitly approved.
 - **Feature flags:** `VITE_ENABLE_*=true|false` (see `.env.example`). Flags default to false in code, gate both route and nav link, and hidden features cost zero bytes because routes lazy-load.
 - **Styles:** SCSS Modules colocated with components; design tokens are CSS custom properties in `src/presentation/styles/global.scss` (light + dark). Never hardcode colors or sizes.

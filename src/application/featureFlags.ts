@@ -3,16 +3,18 @@
 //
 // A flag must default to false in code so a missing .env never leaks a
 // half-built feature; .env.example documents the opt-in. Vite inlines these
-// constants at build time — there is no runtime toggle.
+// constants at build time — there is no runtime toggle. scripts/validate-env.mjs
+// fails the dev server and build when a flag name is misspelled or its value
+// is not 'true'/'false'. Types come from src/vite-env.d.ts.
 
 export interface FeatureFlags {
   readonly tasks: boolean;
 }
 
-function flag(name: string): boolean {
-  return import.meta.env[name] === 'true';
+function flag(value: 'true' | 'false' | undefined): boolean {
+  return value === 'true';
 }
 
 export const featureFlags: FeatureFlags = {
-  tasks: flag('VITE_ENABLE_TASKS'),
+  tasks: flag(import.meta.env.VITE_ENABLE_TASKS),
 };

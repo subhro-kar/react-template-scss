@@ -57,14 +57,18 @@ inward until it stops needing React, and put it there.
 ## Testing
 
 - Native Node runner only: `pnpm test` runs
-  `node --experimental-strip-types --test "src/**/*.test.ts"`. No vitest/jest,
-  no DOM shims — testable code lives in domain/application/infrastructure as
-  pure functions and classes, which is the point of the layering.
+  `node --experimental-strip-types --test "src/**/*.test.ts"`. No vitest/jest
+  wiring, no DOM shims — testable code lives in domain/application/infrastructure
+  as pure functions and classes, which is the point of the layering.
 - Colocate `*.test.ts` next to the module it tests.
 - `pnpm test:coverage` adds c8 line/branch coverage; `pnpm build` runs
   `tsc --noEmit` first, so type errors fail the build.
 - `MemoryTaskRepository` (infrastructure/storage) is the injected fake for
   store and application tests — no mocking libraries.
+- vitest, happy-dom, and Testing Library are installed but not wired into
+  `pnpm test`. If component tests are needed, add a `vitest.config.ts`
+  (`environment: 'happy-dom'`, include `src/**/*.test.tsx`) and a
+  `test:components` script; keep the Node runner as the default.
 
 ## Style
 
@@ -85,6 +89,8 @@ inward until it stops needing React, and put it there.
   labels on icon-only controls, reduced-motion respected.
 - Feature flags (`VITE_ENABLE_*`) default to false in code, are documented in
   `.env.example`, and gate both the route and its nav entry. New, unfinished
-  features ship behind a flag.
+  features ship behind a flag. Their types live in `src/vite-env.d.ts` and
+  `scripts/validate-env.mjs` checks names and values before every dev/build —
+  add a flag to all three places at once.
 - Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `test:`,
   `chore:`) on every commit to `main`.

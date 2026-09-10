@@ -22,7 +22,11 @@ knows React renders anything on a screen.
   nav link, and the flag check together.
 - Shared building blocks go in `components/`; anything with feature-specific
   markup goes in `features/<name>/`. A component used by two features is a
-  `components/` candidate only after the second consumer exists.
+  `components/` candidate only after the second consumer exists. The template
+  ships the standard set: `Button`, `ErrorBoundary` (optional `fallback`
+  render prop), `Skeleton` (decorative placeholder — the surrounding region
+  owns the `role="status"` announcement), and `PageSkeleton` (composes
+  Skeletons with one announcement for lazy routes).
 - Wrap routes in `components/ErrorBoundary` so a feature crash degrades to
   a fallback instead of a blank page.
 

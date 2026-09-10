@@ -2,9 +2,12 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 import styles from '@/presentation/components/ErrorBoundary.module.scss';
 
 // Feature-level boundary: wrap each route so one crashing feature never
-// takes down the app shell. Reset by remounting (route change).
+// takes down the app shell. Reset by remounting — a route change or a
+// `key` change from the parent does it.
 
 interface ErrorBoundaryProps {
+  /** Rendered instead of the default fallback. Receives the caught error. */
+  fallback?: (error: Error) => ReactNode;
   children: ReactNode;
 }
 
@@ -25,6 +28,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   render() {
     if (this.state.error) {
+      if (this.props.fallback) return this.props.fallback(this.state.error);
       return (
         <div role="alert" className={styles.fallback}>
           <h2>Something went wrong</h2>
