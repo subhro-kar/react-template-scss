@@ -1,0 +1,17 @@
+.fallback {
+  margin: var(--space-xl) auto;
+  padding: var(--space-lg);
+  max-width: 32rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-align: center;
+
+  h2 {
+    margin-bottom: var(--space-sm);
+  }
+
+  p {
+    color: var(--color-text-muted);
+  }
+}

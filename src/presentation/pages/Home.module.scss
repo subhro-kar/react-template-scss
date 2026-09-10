@@ -1,0 +1,27 @@
+.home {
+  max-width: 44rem;
+
+  h1 {
+    margin-bottom: var(--space-md);
+    font-size: 2rem;
+  }
+
+  p {
+    margin-bottom: var(--space-md);
+    color: var(--color-text-muted);
+  }
+}
+
+.lede {
+  font-size: 1.125rem;
+  color: var(--color-text);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.35em;
+}
